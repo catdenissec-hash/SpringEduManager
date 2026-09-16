@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha del Alumno - SpringEduManager</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="bg-light">
+
+    <!-- Fragmento del Menú de Navegación -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">📄 Ficha Completa del Estudiante</h4>
+                        <span class="badge bg-primary fs-6" th:text="'ID: ' + ${alumno.id}">ID: 1</span>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <div class="row g-3">
+                            <!-- 1. RUT -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">RUT:</strong>
+                                <span class="fs-5" th:text="${alumno.rut}">12345678-9</span>
+                            </div>
+
+                            <!-- 2 y 3. Nombre Completo -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Nombre Completo:</strong>
+                                <span class="fs-5" th:text="${alumno.nombre + ' ' + alumno.apellido}">Juan Pérez</span>
+                            </div>
+
+                            <!-- 4. Email -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Correo Electrónico:</strong>
+                                <span th:text="${alumno.email}">juan.perez@email.com</span>
+                            </div>
+
+                            <!-- 5. Teléfono -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Teléfono de Contacto:</strong>
+                                <span th:text="${alumno.telefono}">+56912345678</span>
+                            </div>
+
+                            <!-- 6. Curso -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Curso Asignado:</strong>
+                                <span class="badge bg-info text-dark fs-6" th:text="${alumno.curso}">Desarrollo Java M6</span>
+                            </div>
+
+                            <!-- 7. Estado de la Práctica -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Estado de Práctica:</strong>
+                                <span th:text="${alumno.estadoPractica}"
+                                      th:classappend="${alumno.estadoPractica == 'Aprobada' ? 'badge bg-success fs-6' : (alumno.estadoPractica == 'En Curso' ? 'badge bg-warning text-dark fs-6' : 'badge bg-secondary fs-6')}">
+                                    En Curso
+                                </span>
+                            </div>
+
+                            <!-- 8. Promedio de Evaluaciones -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Promedio de Evaluaciones:</strong>
+                                <span class="fw-bold fs-5" th:text="${alumno.promedioEvaluaciones}">6.5</span>
+                            </div>
+
+                            <!-- 9. Fecha de Inscripción -->
+                            <div class="col-md-6 border-bottom pb-2">
+                                <strong class="text-muted d-block">Fecha de Inscripción:</strong>
+                                <span th:text="${#temporals.format(alumno.fechaInscripcion, 'dd/MM/yyyy')}">01/03/2026</span>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a th:href="@{/alumnos}" class="btn btn-secondary">
+                                ← Volver a la Lista
+                            </a>
+                            <!-- Botón de edición accesible solo para ADMIN -->
+                            <a sec:authorize="hasRole('ADMIN')" 
+                               th:href="@{/alumnos/editar/{id}(id=${alumno.id})}" 
+                               class="btn btn-warning">
+                                ✏️ Editar Estudiante
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

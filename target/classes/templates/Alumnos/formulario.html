@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${alumnoDTO.id != null} ? 'Editar Alumno' : 'Nuevo Alumno'">Formulario Alumno</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="bg-light">
+
+    <!-- Fragmento del Menú de Navegación -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0" th:text="${alumnoDTO.id != null} ? '✏️ Editar Alumno' : '➕ Registrar Nuevo Alumno'">
+                            Formulario de Estudiante
+                        </h4>
+                    </div>
+                    <div class="card-body p-4">
+
+                        <!-- Formulario mapeado con AlumnoDTO -->
+                        <form th:action="@{/alumnos/guardar}" th:object="${alumnoDTO}" method="post" class="needs-validation">
+                            
+                            <!-- Campo oculto para el ID en caso de edición -->
+                            <input type="hidden" th:field="*{id}" />
+
+                            <div class="row g-3">
+                                
+                                <!-- 1. RUT -->
+                                <div class="col-md-6">
+                                    <label for="rut" class="form-label font-weight-bold">RUT:</label>
+                                    <input type="text" th:field="*{rut}" id="rut" class="form-control" 
+                                           placeholder="12345678-9" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{rut}">Error en el RUT</div>
+                                </div>
+
+                                <!-- 2. Nombre -->
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre:</label>
+                                    <input type="text" th:field="*{nombre}" id="nombre" class="form-control" 
+                                           placeholder="Ej: Juan" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{nombre}">Error en el nombre</div>
+                                </div>
+
+                                <!-- 3. Apellido -->
+                                <div class="col-md-6">
+                                    <label for="apellido" class="form-label">Apellido:</label>
+                                    <input type="text" th:field="*{apellido}" id="apellido" class="form-control" 
+                                           placeholder="Ej: Pérez" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{apellido}">Error en el apellido</div>
+                                </div>
+
+                                <!-- 4. Email -->
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Correo Electrónico:</label>
+                                    <input type="email" th:field="*{email}" id="email" class="form-control" 
+                                           placeholder="juan.perez@email.com" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{email}">Error en el email</div>
+                                </div>
+
+                                <!-- 5. Teléfono -->
+                                <div class="col-md-6">
+                                    <label for="telefono" class="form-label">Teléfono:</label>
+                                    <input type="text" th:field="*{telefono}" id="telefono" class="form-control" 
+                                           placeholder="+56912345678" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{telefono}">Error en el teléfono</div>
+                                </div>
+
+                                <!-- 6. Curso -->
+                                <div class="col-md-6">
+                                    <label for="curso" class="form-label">Curso Asignado:</label>
+                                    <input type="text" th:field="*{curso}" id="curso" class="form-control" 
+                                           placeholder="Ej: Desarrollo Java M6" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{curso}">Error en el curso</div>
+                                </div>
+
+                                <!-- 7. Estado de la Práctica -->
+                                <div class="col-md-6">
+                                    <label for="estadoPractica" class="form-label">Estado de Práctica:</label>
+                                    <select th:field="*{estadoPractica}" id="estadoPractica" class="form-select" th:errorclass="is-invalid">
+                                        <option value="">-- Seleccionar --</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En Curso">En Curso</option>
+                                        <option value="Aprobada">Aprobada</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:errors="*{estadoPractica}">Error en el estado de práctica</div>
+                                </div>
+
+                                <!-- 8. Promedio de Evaluaciones -->
+                                <div class="col-md-6">
+                                    <label for="promedioEvaluaciones" class="form-label">Promedio (1.0 a 7.0):</label>
+                                    <input type="number" step="0.1" th:field="*{promedioEvaluaciones}" id="promedioEvaluaciones" 
+                                           class="form-control" placeholder="Ej: 6.5" min= "1.0"  max= "7.0" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{promedioEvaluaciones}">Error en el promedio</div>
+                                </div>
+
+                                <!-- 9. Fecha de Inscripción -->
+                                <div class="col-md-12">
+                                    <label for="fechaInscripcion" class="form-label">Fecha de Inscripción:</label>
+                                    <input type="date" th:field="*{fechaInscripcion}" id="fechaInscripcion" 
+                                           class="form-control" th:errorclass="is-invalid" />
+                                    <div class="invalid-feedback" th:errors="*{fechaInscripcion}">Error en la fecha</div>
+                                </div>
+
+                            </div>
+
+                            <!-- Botones de Acción -->
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a th:href="@{/alumnos}" class="btn btn-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-success" th:text="${alumnoDTO.id != null} ? 'Actualizar' : 'Guardar'">
+                                    Guardar
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
